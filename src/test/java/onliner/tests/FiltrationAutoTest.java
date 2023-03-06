@@ -7,7 +7,7 @@ import onliner.pageObject.pages.MainPage;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-public class FiltrationAuto extends BaseTest {
+public class FiltrationAutoTest extends BaseTest {
 
     private static final String TEST = "//div[@class='vehicle-form__description vehicle-form__description_base vehicle-form__description_primary vehicle-form__description_transmission vehicle-form__description_condensed-other']";
 

@@ -7,7 +7,7 @@
         <classes>
             <class name = "utils.OnlinerTest"/>
             <class name = "onliner.tests.NavigationTest"/>
-            <class name = "onliner.tests.FiltrationAuto"/>
+            <class name = "onliner.tests.FiltrationAutoTest"/>
         </classes>
     </test>
 </suite>
