@@ -2,7 +2,8 @@ package onliner.tests;
 
 import framework.BaseTest;
 import jdk.jfr.Description;
-import onliner.pageObject.*;
+import onliner.pageObject.pages.AutobarakholkaPage;
+import onliner.pageObject.pages.MainPage;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 

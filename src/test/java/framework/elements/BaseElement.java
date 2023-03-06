@@ -1,10 +1,8 @@
 package framework.elements;
 import framework.Browser;
+import framework.PropertyReader;
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
 
@@ -12,6 +10,8 @@ import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
+
+import static framework.PropertyReader.getProperty;
 
 @Log4j2
 public abstract class BaseElement {
@@ -54,6 +54,7 @@ public abstract class BaseElement {
                 public Boolean apply(final WebDriver driver) {
                     try {
                         elements = driver.findElements(by);
+                        log.info(getElementType() + ": " + by + " - are present");
                         for (WebElement element : elements) {
                             if (element instanceof WebElement && element.isDisplayed()) {
                                 element = (WebElement) element;
@@ -75,6 +76,7 @@ public abstract class BaseElement {
 
     public WebElement getElement() {
         isElementPresent();
+        log.info("Get element: " + getElementType() + " : " + by);
         return element;
     }
 
@@ -98,55 +100,54 @@ public abstract class BaseElement {
 
     public String getText() {
         isElementPresent();
+        log.info("Get text: " + getElementType() + " : " + by);
         return element.getText();
     }
 
     public void click() {
         isElementPresent();
-        log.info("Click on: " + getElementType() + " : " + by);
+        log.info(getProperty("element.click") + " - " + getElementType() + " : " + by);
         element.click();
         Browser.getTimeoutForCondition();
     }
 
     public void clickAndWait() { //используется, когда после клика происходит редирект на другую страницу
         isElementPresent();
+        log.info(getProperty("element.click") + " and " + getProperty("element.wait") + " - " + getElementType() + " : " + by);
         element.click();
         Browser.getTimeoutForPageLoad();
     }
 
-//    public void clickViaJS() {
-//        isElementPresent();
-//        if (Browser.getDriver() instanceof JavascriptExecutor) {
-//            ((JavascriptExecutor) Browser.getDriver()).executeScript("arguments[0].style.border='3px solid blue'", element);
-//            ((JavascriptExecutor) Browser.getDriver()).executeScript("arguments[0].click();", element);
-//        }
-//    }
-
     public void moveAndClickByAction() {
         isElementPresent();
+        log.info(getProperty("element.move") + " and " + getProperty("element.click") + getProperty("element.action") + " - "  + getElementType() + " : " + by);
         Actions actions = new Actions(Browser.getDriver());
         actions.moveToElement(element).click().perform();
     }
 
     public void moveAndClick() {
         isElementPresent();
+        log.info(getProperty("element.move") + " and " + getProperty("element.click") + " - " + getElementType() + " : " + by);
         Actions actions = new Actions(Browser.getDriver());
         actions.moveToElement(element).click();
     }
     public void moveToElement() {
         isElementPresent();
+        log.info(getProperty("element.move") + " - " + getElementType() + " : " + by);
         Actions actions = new Actions(Browser.getDriver());
         actions.moveToElement(element).perform();
     }
 
     public void selectComboBox(String value) {
         isElementPresent();
+        log.info("Select: " + getElementType() + " : " + by);
         Select select = new Select(element);
         select.selectByVisibleText(value);
     }
 
     public String getAttribute(String attribute) {
         isElementPresent();
+        log.info("Get attribute: " + getElementType() + " : " + by);
         return element.getAttribute(attribute);
     }
 
@@ -159,8 +160,8 @@ public abstract class BaseElement {
 
     public void clickViaJS() {
         moveToElement();
+        log.info(getProperty("element.click") + " - " + getElementType() + " : " + by);
         JavascriptExecutor js =(JavascriptExecutor) Browser.getDriver();
-        //js.executeScript("arguments[0].scrollIntoView();", element);
         js.executeScript("window.scrollTo(0, document.body.scrollHeight)", element);
     }
 

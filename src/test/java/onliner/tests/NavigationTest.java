@@ -2,7 +2,8 @@ package onliner.tests;
 
 import framework.BaseTest;
 import io.qameta.allure.Description;
-import onliner.pageObject.*;
+import onliner.pageObject.pages.CatalogPage;
+import onliner.pageObject.pages.MainPage;
 import org.testng.annotations.Test;
 
 public class NavigationTest extends BaseTest {

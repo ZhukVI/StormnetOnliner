@@ -1,4 +1,4 @@
-package onliner.pageObject;
+package onliner.pageObject.pages;
 
 import framework.BasePage;
 import framework.elements.Label;
