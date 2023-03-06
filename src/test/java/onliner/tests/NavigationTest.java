@@ -12,11 +12,11 @@ public class NavigationTest extends BaseTest {
             "Страница 'Ноутбуки, компьютеры, мониторы' загружена.")
     public void navigationMenuTest() {
         MainPage mainPage = new MainPage();
-        mainPage.navigateToCatalogHeaderMenu();
+        mainPage.navigateHeaderMenu("Каталог");
 
         CatalogPage catalogPage = new CatalogPage();
-        catalogPage.navigateToComputers();
-        catalogPage.navigateToSubmenuItem();
-        catalogPage.navigateToSubmenuCategoryItem();
+        catalogPage.navigateToMainMenuItem("Компьютеры");
+        catalogPage.navigateToSubmenuItem("Ноутбуки, компьютеры, мониторы");
+        catalogPage.navigateToSubmenuCategoryItem("Игровые ноутбуки");
     }
 }

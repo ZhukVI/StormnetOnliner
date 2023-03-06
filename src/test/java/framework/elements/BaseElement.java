@@ -1,5 +1,6 @@
 package framework.elements;
 import framework.Browser;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
+@Log4j2
 public abstract class BaseElement {
     protected WebElement element;
     protected List<WebElement> elements;
@@ -34,42 +36,42 @@ public abstract class BaseElement {
         try {
             Browser.getDriver().manage().timeouts().implicitlyWait(Integer.parseInt(Browser.getTimeoutForCondition()), TimeUnit.SECONDS);
             element = Browser.getDriver().findElement(by);
-            System.out.println(getElementType() + ": " + by + " - is present");
+            log.info(getElementType() + ": " + by + " - is present");
             return element.isDisplayed();
         } catch (NoSuchElementException e) {
-            System.out.println(getElementType() + ": " + by + " - is not present. Exception - NoSuchElementException");
+            log.info(getElementType() + ": " + by + " - is not present. Exception - NoSuchElementException");
         } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
+            log.info("Exception: " + e.getMessage());
         }
         return false;
     }
 
-//    public boolean areElementPresent(int timeout) {
-//        wait = new WebDriverWait(Browser.getDriver(), Duration.ofSeconds(timeout));
-//        Browser.getDriver().manage().timeouts().implicitlyWait(Integer.valueOf(Browser.getTimeoutForCondition()), TimeUnit.SECONDS);
-//        try {
-//            wait.until(ExpectedCondition<Boolean>) new ExpectedCondition<Boolean>() {
-//                public Boolean apply(final WebDriver driver) {
-//                    try {
-//                        elements = driver.findElements(by);
-//                        for (WebElement element : elements) {
-//                            if (element instanceof WebElement && element.isDisplayed()) {
-//                                element = (WebElement) element;
-//                                return element.isDisplayed();
-//                            }
-//                        }
-//                        element = (WebElement) driver.findElement(by);
-//                    } catch (Exception e) {
-//                        return false;
-//                    }
-//                    return element.isDisplayed();
-//                }
-//            });
-//        } catch (Exception e) {
-//            return false;
-//        }
-//        return false;
-//    }
+    public boolean areElementPresent(int timeout) {
+        wait = new WebDriverWait(Browser.getDriver(), Duration.ofSeconds(timeout));
+        Browser.getDriver().manage().timeouts().implicitlyWait(Integer.valueOf(Browser.getTimeoutForCondition()), TimeUnit.SECONDS);
+        try {
+            wait.until((ExpectedCondition<Boolean>) new ExpectedCondition<Boolean>() {
+                public Boolean apply(final WebDriver driver) {
+                    try {
+                        elements = driver.findElements(by);
+                        for (WebElement element : elements) {
+                            if (element instanceof WebElement && element.isDisplayed()) {
+                                element = (WebElement) element;
+                                return element.isDisplayed();
+                            }
+                        }
+                        element = (WebElement) driver.findElement(by);
+                    } catch (Exception e) {
+                        return false;
+                    }
+                    return element.isDisplayed();
+                }
+            });
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
 
     public WebElement getElement() {
         isElementPresent();
@@ -78,16 +80,19 @@ public abstract class BaseElement {
 
     public void sendKeys(String sendKeys) {
         isElementPresent();
+        log.info("Send keys: " + getElementType() + " : " + by);
         getElement().sendKeys(sendKeys);
     }
 
     public boolean isDisplayed() {
         isElementPresent();
+        log.info(getElementType() + " : " + by + " is displayed: " + element.isDisplayed());
         return element.isDisplayed();
     }
 
     public boolean isSelected() {
         isElementPresent();
+        log.info(getElementType() + " : " + by + " is selected: " + element.isSelected());
         return element.isSelected();
     }
 
@@ -98,6 +103,7 @@ public abstract class BaseElement {
 
     public void click() {
         isElementPresent();
+        log.info("Click on: " + getElementType() + " : " + by);
         element.click();
         Browser.getTimeoutForCondition();
     }

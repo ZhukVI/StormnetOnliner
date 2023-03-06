@@ -1,20 +1,23 @@
 package onliner.pageObject;
 
 import framework.BasePage;
+import framework.Browser;
 import framework.elements.*;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.testng.Assert;
+import org.openqa.selenium.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AutobarakholkaPage extends BasePage {
 
     private static final By PAGE_LOCATOR = By.xpath("//h1[contains(text(),'Автобарахолка')]");
-    private static final Button CURRENCY_BUTTON_LOCATOR = new Button(By.xpath("//a[@class='vehicle-" +
-            "form__link vehicle-form__link_primary vehicle-form__link_base' and text()='USD']"));
-    private static final TextBox COST_FIELD_XPATH = new TextBox(By.xpath("//div[@class='vehicle-form" +
-            "__row vehicle-form__row_condensed-alter']//input[@placeholder='до']"));
-    private static final CheckBox TYPE_VEHICLE_CHECKBOX_XPATH = new CheckBox (By.xpath("//div[contains(text(),'Седан')]/../../.."));
-    private static final CheckBox TYPE_ENGINE_CHECKBOX_XPATH = new CheckBox(By.xpath("//label[@class='vehicle-form__checkbox-label']//div[@class='i-checkbox vehicle-form__checkbox vehicle-form__checkbox_base']//div[@class='vehicle-form__checkbox-text']//div[contains(text(),'Автоматическая')]/../../.."));
+    private static final String CURRENCY_BUTTON_LOCATOR = "//a[@class='vehicle-" +
+            "form__link vehicle-form__link_primary vehicle-form__link_base' and text()='%s']";
+    private static final String COST_FIELD_XPATH = "//div[@class='vehicle-form" +
+            "__row vehicle-form__row_condensed-alter']//input[@placeholder='%s']";
+    private static final String TYPE_VEHICLE_CHECKBOX_XPATH = "//div[contains(text(),'%s')]/../../..";
+    private static final String TYPE_ENGINE_CHECKBOX_XPATH = "//label[@class='vehicle-form__checkbox-label']//div[@class='i-checkbox vehicle-form__checkbox vehicle-form__checkbox_base']//div[@class='vehicle-form__checkbox-text']//div[contains(text(),'%s')]/../../..";
     private static final Label COLOR_XPATH = new Label(By.xpath("//div[contains(text(),'Цвет')]"));
     private static final String TEST = "//div[@class='vehicle-form__description vehicle-form__description_base vehicle-form__description_primary vehicle-form__description_transmission vehicle-form__description_condensed-other']";
 
@@ -23,20 +26,48 @@ public class AutobarakholkaPage extends BasePage {
     }
 
     @Step("Фильтрация по цене и валюте.")
-    public void costFilter() {
-        CURRENCY_BUTTON_LOCATOR.moveAndClickByAction();
-        COST_FIELD_XPATH.sendKeys("100000");
+    public void costFilter(String currency, String cost) {
+        Button currencyButton = new Button(By.xpath(String.format(CURRENCY_BUTTON_LOCATOR, currency)));
+        currencyButton.click();
+        TextBox costField = new TextBox(By.xpath(String.format(COST_FIELD_XPATH, cost)));
+        costField.sendKeys(cost);
     }
 
     @Step("Фильтрация по типу кузова.")
-    public void vehicleFilter() {
-        TYPE_VEHICLE_CHECKBOX_XPATH.click();
+
+    public void vehicleFilter(String vehicleType) {
+        CheckBox typeVehicle = new CheckBox(By.xpath(String.format(TYPE_VEHICLE_CHECKBOX_XPATH, vehicleType)));
+        typeVehicle.click();
     }
 
     @Step("Фильтрация по типу двигателя.")
-    public void engineFilter() {
+    public void engineFilter(String typeEngine) {
         COLOR_XPATH.moveToElement();
-        TYPE_ENGINE_CHECKBOX_XPATH.click();
+        Label typeEngineCheckbox = new Label(By.xpath(String.format(TYPE_ENGINE_CHECKBOX_XPATH, typeEngine)));
+        typeEngineCheckbox.click();
+    }
+
+    @Step("Проверка работа фильтра по типу кузова.")
+    public void checkEngineFilter() {
+    WebDriver driver1 = Browser.getDriver();
+
+    JavascriptExecutor js =(JavascriptExecutor) Browser.getDriver();
+    js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+    List<WebElement> labels = driver1.findElements(By.xpath(TEST));
+
+    System.out.println(labels.size());
+    ArrayList<WebElement> Automatic_offers_list = new ArrayList();
+        for (
+    WebElement a : labels) {
+        if(a.getText().contains("Автоматическая")) {
+            Automatic_offers_list.add(a);
+        }
+    }
+    Boolean result = false;
+        if (labels.size() == Automatic_offers_list.size()) {
+        result = true;
+    }
+        System.out.println(result);
     }
 
 
