@@ -1,38 +1,59 @@
 package onliner.steps;
 
 import framework.BaseTest;
+import framework.PropertyReader;
+
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Then;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
 import onliner.pageObject.pages.*;
 
+
 public class FiltrationSteps extends BaseTest {
-    @Then("Click {string} button")
-    public void clickButton(String arg0) {
+    @Given("Go to {string}")
+    public void goTo(String arg0) {
+        driver.getInstance();
+        driver.windowMaximize();
+        driver.navigate(PropertyReader.getProperty("base.URL"));
+    }
+
+    @When("I navigate to the {string} page")
+    public void iNavigateToThePage(String arg0) {
         MainPage mainPage = new MainPage();
         mainPage.navigateHeaderMenu("Автобарахолка");
     }
 
-    @And("Input {string} in the fielg")
-    public void inputInTheFielg(String currency, String COST_FIELD_XPATH) {
+    @And("Click button {string}")
+    public void clickCurrencyButton(String arg0) {
         AutobarakholkaPage autobarakholkaPage = new AutobarakholkaPage();
-        autobarakholkaPage.costFilter(currency, COST_FIELD_XPATH);
+        autobarakholkaPage.currencyFilter("USD");
     }
 
-    @Then("Choose {string} at vehicle checkbox")
+    @And("In the field input {string}")
+    public void inTheFieldInput(String arg0) {
+        AutobarakholkaPage autobarakholkaPage = new AutobarakholkaPage();
+        autobarakholkaPage.costFilter("100000");
+    }
+
+
+    @And("Choose {string} at vehicle checkbox")
     public void chooseAtVehicleCheckbox(String arg0) {
         AutobarakholkaPage autobarakholkaPage = new AutobarakholkaPage();
         autobarakholkaPage.vehicleFilter("Седан");
     }
 
-    @Then("Choose {string} at engine checkbox")
+    @And("Choose {string} at engine checkbox")
     public void chooseAtEngineCheckbox(String arg0) {
         AutobarakholkaPage autobarakholkaPage = new AutobarakholkaPage();
         autobarakholkaPage.engineFilter("Автоматическая");
     }
 
-    @Then("Check the correct operation by engine filter")
+    @And("Check the correct operation by engine filter")
     public void checkTheCorrectOperationByEngineFilter() {
         AutobarakholkaPage autobarakholkaPage = new AutobarakholkaPage();
         autobarakholkaPage.checkEngineFilter();
     }
+
+
+
 }

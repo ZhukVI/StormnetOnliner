@@ -158,6 +158,13 @@ public abstract class BaseElement {
         }
     }
 
+    public void scrollToElementViaJS(){
+        isElementPresent();
+        if (Browser.getDriver() instanceof JavascriptExecutor) {
+            ((JavascriptExecutor) Browser.getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+        }
+    }
+
     public void clickViaJS() {
         moveToElement();
         log.info(getProperty("element.click") + " - " + getElementType() + " : " + by);

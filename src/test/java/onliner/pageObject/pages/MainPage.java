@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 
 public class MainPage extends BasePage {
 
-    private static final Label PAGE_LOCATOR = new Label(By.xpath("//img[@class='onliner_logo']"));
     private static final String NAV_MENU_ITEM = "//span[@class='b-main-navigation__text' and text()='%s']";
     private static final By pageLocator = By.xpath("//img[@class='onliner_logo']");
 

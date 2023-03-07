@@ -16,8 +16,8 @@ public class BaseTest {
 
     }
 
-//    @AfterMethod(alwaysRun = true, description = "Closing browser")
-//    public void tearDown() {
-//        driver.exit();
-//    }
+    @AfterMethod(alwaysRun = true, description = "Closing browser")
+    public void tearDown() {
+        driver.exit();
+    }
 }

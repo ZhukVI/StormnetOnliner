@@ -1,14 +1,10 @@
 Feature: Onliner
 
-  Scenario Outline: FiltrationAutoTest
+  Scenario:
     Given Go to "https://onliner.by/"
     When I navigate to the "Автобарахолка" page
-    Then Click button "<currency>"
-    And In the field input "<COST_FIELD_XPATH>"
-    Then Choose "Седан" at vehicle checkbox
-    Then Choose "Автоматическая" at engine checkbox
-    Then Check the correct operation by engine filter
-
-    Examples:
-      | currency | COST_FIELD_XPATH |
-      | USD      | 100000           |
+    And Click button "USD"
+    And In the field input "100000"
+    And Choose "Седан" at vehicle checkbox
+    And Choose "Автоматическая" at engine checkbox
+    And Check the correct operation by engine filter

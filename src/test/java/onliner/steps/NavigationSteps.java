@@ -8,9 +8,13 @@ import io.cucumber.java.en.When;
 import onliner.pageObject.pages.CatalogPage;
 import onliner.pageObject.pages.MainPage;
 
+import static framework.BaseTest.driver;
+
 public class NavigationSteps extends BaseTest {
     @Given("Go to {string}")
     public void goTo(String arg0) {
+        driver.getInstance();
+        driver.windowMaximize();
         driver.navigate(PropertyReader.getProperty("base.URL"));
     }
 
